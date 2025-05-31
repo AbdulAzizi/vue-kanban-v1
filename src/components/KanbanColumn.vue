@@ -47,7 +47,7 @@
 </template>
 
 
-<style scoped>
+<style>
 .kanban-column {
     flex: 0 0 auto;
     width: 448px;

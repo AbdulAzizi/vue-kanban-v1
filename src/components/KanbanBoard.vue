@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-    import KanbanColumn from './KanbanColumn.vue';
     import { reactive, useId, ref } from 'vue';
     import type { KanbanColumnType } from '../types/kanbanTypes';
+    import KanbanColumn from './KanbanColumn.vue';
+    import KanbanColumnForm from './KanbanColumnForm.vue';
 
     const columns = reactive<KanbanColumnType[]>([
         { id: useId(), title: 'Todo', order: 1, cards: [] },
@@ -12,6 +13,7 @@
     ]);
 
     const draggedColumn = ref<KanbanColumnType | null>(null);
+    const displayColumnForm = ref(false);
 
     const setDraggedColumn = (column: KanbanColumnType) => {
         draggedColumn.value = column;
@@ -38,6 +40,17 @@
             col.order = orders[i];
         });
     };
+
+    const addColumn = (title: string) => {
+        const maxOrder = Math.max(...columns.map(c => c.order), 0);
+        columns.push({
+            id: useId(),
+            title,
+            order: maxOrder + 1,
+            cards: [],
+        });
+        displayColumnForm.value = false;
+    };
 </script>
 
 <template>
@@ -51,12 +64,17 @@
                 @drag-start="setDraggedColumn"
                 @reorder="reorderColumns"
             />
+            <KanbanColumnForm
+                v-if="displayColumnForm"
+                @save="addColumn"
+                @cancel="displayColumnForm = false"
+            />
         </section>
         
         <footer class="kanban-footer">
             <div class="kanban-actions">
                 <div class="buttons-row">
-                    <button type="button" class="button icon-button">
+                    <button @click="displayColumnForm = true" type="button" class="button icon-button">
                         <img alt="" src="../assets/plus.svg" class="icon" />
                         <span>New Column</span>
                     </button>
