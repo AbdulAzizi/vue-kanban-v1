@@ -1,54 +1,14 @@
 <script lang="ts" setup>
-    import { reactive, useId, ref } from 'vue';
-    import type { KanbanColumnType } from '../types/kanbanTypes';
+    import { ref } from 'vue';
     import KanbanColumn from './KanbanColumn.vue';
     import KanbanColumnForm from './KanbanColumnForm.vue';
+    import { useKanbanStore } from '@/stores/kanban';
 
-    const columns = reactive<KanbanColumnType[]>([
-        { id: useId(), title: 'Todo', order: 1, cards: [] },
-        { id: useId(), title: 'In progress', order: 2, cards: [] },
-        { id: useId(), title: 'Done', order: 3, cards: [] },
-        { id: useId(), title: 'Backlog', order: 4, cards: [] },
-        { id: useId(), title: 'Archive', order: 5, cards: [] },
-    ]);
-
-    const draggedColumn = ref<KanbanColumnType | null>(null);
+    const kanban = useKanbanStore();
     const displayColumnForm = ref(false);
-
-    const setDraggedColumn = (column: KanbanColumnType) => {
-        draggedColumn.value = column;
-    };
-
-    const reorderColumns = (hoveredColumn: KanbanColumnType) => {
-        if (!draggedColumn.value || draggedColumn.value.id === hoveredColumn.id) return;
-
-        const from = draggedColumn.value;
-        const to = hoveredColumn;
-
-        const temp = from.order;
-        from.order = to.order;
-        to.order = temp;
-    };
-
-    const shuffleColumns = () => {
-        const orders = columns.map(col => col.order);
-        for (let i = orders.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [orders[i], orders[j]] = [orders[j], orders[i]];
-        }
-        columns.forEach((col, i) => {
-            col.order = orders[i];
-        });
-    };
-
-    const addColumn = (title: string) => {
-        const maxOrder = Math.max(...columns.map(c => c.order), 0);
-        columns.push({
-            id: useId(),
-            title,
-            order: maxOrder + 1,
-            cards: [],
-        });
+    
+    const handleAddColumn = (title: string) => {
+        kanban.addColumn(title);
         displayColumnForm.value = false;
     };
 </script>
@@ -57,16 +17,16 @@
     <div class="kanban-container">
         <section class="kabnban-columns" aria-label="Kanban Board">
             <KanbanColumn 
-                v-for="column in columns" 
+                v-for="column in kanban.columns" 
                 :key="column.id" 
                 :column="column"
                 :style="{ order: column.order }"
-                @drag-start="setDraggedColumn"
-                @reorder="reorderColumns"
+                @drag-start="kanban.setDraggedColumn"
+                @reorder="kanban.reorderColumns"
             />
             <KanbanColumnForm
                 v-if="displayColumnForm"
-                @save="addColumn"
+                @save="handleAddColumn"
                 @cancel="displayColumnForm = false"
             />
         </section>
@@ -78,7 +38,7 @@
                         <img alt="" src="../assets/plus.svg" class="icon" />
                         <span>New Column</span>
                     </button>
-                    <button @click="shuffleColumns" type="button" class="button icon-button">
+                    <button @click="kanban.shuffleColumns" type="button" class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Columns</span>
                     </button>

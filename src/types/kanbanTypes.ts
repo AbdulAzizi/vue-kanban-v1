@@ -9,7 +9,6 @@ export interface KanbanColumnType {
     id: string;
     title: string;
     order: number;
-    cards: KanbanCardType[];
 }
 
 export interface KanbanBoardType {
