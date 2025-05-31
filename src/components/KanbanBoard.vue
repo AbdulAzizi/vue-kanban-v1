@@ -45,10 +45,22 @@
         <footer class="kanban-footer">
             <div class="kanban-actions">
                 <div class="buttons-row">
-                    <button type="button">New Column</button>
-                    <button type="button">Shuffle Columns</button>
-                    <button type="button">Shuffle Cards</button>
-                    <button type="button">Disable Editing</button>
+                    <button type="button" class="button icon-button">
+                        <img alt="" src="../assets/plus.svg" class="icon" />
+                        <span>New Column</span>
+                    </button>
+                    <button type="button" class="button icon-button">
+                        <img alt="" src="../assets/shuffle.svg" class="icon" />
+                        <span>Shuffle Columns</span>
+                    </button>
+                    <button type="button" class="button icon-button">
+                        <img alt="" src="../assets/shuffle.svg" class="icon" />
+                        <span>Shuffle Cards</span>
+                    </button>
+                    <button type="button" class="button icon-button">
+                        <img alt="" src="../assets/pause.svg" class="icon" />
+                        <span>Disable Editing</span>
+                    </button>
                 </div>
                 <div class="label">Board Actions</div>
             </div>
@@ -64,6 +76,7 @@
     height: 100%;
     box-sizing: border-box;
 }
+
 .kabnban-columns {
     flex: 1;
     display: flex;
@@ -73,6 +86,7 @@
     align-items: stretch;
     overflow-x: auto;
 }
+
 .kabnban-columns::-webkit-scrollbar {
     height: 8px;
 }
@@ -81,6 +95,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
+
 .kanban-footer {
     padding: 24px 0;
     display: flex;
@@ -90,9 +105,14 @@
     background: linear-gradient(var(--vt-c-white), var(--vt-c-grey-bright));
 }
 
-.kanban-footer button {
+.buttons-row {
+    display: flex;
+    align-items: center;
+}
+
+.kanban-footer .button {
     height: 24px;
-    padding: 0 12px;
+    padding: 0 10px;
     margin: 0 4px;
     font-size: 13px;
     background-color: var(--color-button-light);
@@ -102,9 +122,22 @@
     transition: background-color 0.2s;
 }
 
-.kanban-footer button:hover {
+.kanban-footer .button:hover {
     border-color: transparent;
     background-color: var(--vt-c-black-005);
+}
+
+.kanban-footer .icon-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding-left: 4px;
+}
+
+.kanban-footer .icon-button .icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
 }
 
 .kanban-actions {
