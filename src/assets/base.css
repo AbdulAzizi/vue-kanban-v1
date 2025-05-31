@@ -1,0 +1,24 @@
+:root {
+    --vt-c-black-005: rgba(0, 0, 0, 0.05);
+    --vt-c-black-015: rgba(0, 0, 0, 0.15);
+    --vt-c-black-03: rgba(0, 0, 0, 0.3);
+    --vt-c-black-04: rgba(0, 0, 0, 0.4);
+    --vt-c-black-06: rgba(0, 0, 0, 0.6);
+    --vt-c-black-09: rgba(0, 0, 0, 0.9);
+    --vt-c-black-1: #000000;
+    --vt-c-blue-2: #5856D6;
+    --vt-c-blue-1: #007AFF;
+    --vt-c-green: #34C759;
+    --vt-c-red: #FF2D55;
+    --vt-c-orange: #FF9500;
+    --vt-c-white: #ffffff;
+    --vt-c-grey: #CED9E3;
+    --vt-c-grey-bright: #ECEFF2;
+}
+
+:root {
+    --color-background: var(--vt-c-white);
+    --color-column-background: var(--vt-c-grey-bright);
+    --color-button-dark: var(--vt-c-grey);
+    --color-button-light: var(--vt-c-white);
+}
