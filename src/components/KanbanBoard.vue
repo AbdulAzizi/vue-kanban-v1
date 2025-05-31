@@ -27,6 +27,17 @@
         from.order = to.order;
         to.order = temp;
     };
+
+    const shuffleColumns = () => {
+        const orders = columns.map(col => col.order);
+        for (let i = orders.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [orders[i], orders[j]] = [orders[j], orders[i]];
+        }
+        columns.forEach((col, i) => {
+            col.order = orders[i];
+        });
+    };
 </script>
 
 <template>
@@ -49,7 +60,7 @@
                         <img alt="" src="../assets/plus.svg" class="icon" />
                         <span>New Column</span>
                     </button>
-                    <button type="button" class="button icon-button">
+                    <button @click="shuffleColumns" type="button" class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Columns</span>
                     </button>
