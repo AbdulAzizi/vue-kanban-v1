@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { KanbanColumnType } from '@/types/kanbanTypes';
 
-export const useKanbanStore = defineStore('kanban', () => {
+export const useColumnsStore = defineStore('kanban', () => {
     const columns = ref<KanbanColumnType[]>([
         { id: crypto.randomUUID(), title: 'Todo', order: 1 },
         { id: crypto.randomUUID(), title: 'In progress', order: 2 },
@@ -50,7 +50,6 @@ export const useKanbanStore = defineStore('kanban', () => {
 
     return {
         columns,
-        draggedColumn,
         setDraggedColumn,
         reorderColumns,
         shuffleColumns,
