@@ -1,18 +1,20 @@
 <script lang="ts" setup>
-    import type { 
-        KanbanColumnType, 
-        KanbanCardType 
-    } from '../types/kanbanTypes';
-
+    import type { KanbanColumnType } from '../types/kanbanTypes';
+    import KanbanCard from './KanbanCard.vue';
+    import { useDragStore } from '@/stores/dragStore';
+    import { useCardsStore } from '@/stores/cards';
+    
     const props = defineProps<{
-        column: KanbanColumnType,
-        cards: KanbanCardType[],
+        column: KanbanColumnType
     }>();
-
+    
     const emit = defineEmits<{
-        (e: 'drag-start', column: KanbanColumnType): void
-        (e: 'reorder', column: KanbanColumnType): void
+        (e: 'reorder-column', column: KanbanColumnType): void
     }>();
+    
+    const dragStore = useDragStore();
+    const cardsStore = useCardsStore();
+    const cards = cardsStore.getCardsForColumn(props.column.id)
 
     const ondragstart = (event: DragEvent) => {
         if (event.dataTransfer) {
@@ -20,15 +22,20 @@
             event.dataTransfer.dropEffect = 'move';
         }
 
+        dragStore.startDrag('column', props.column);
+
         (event.target as HTMLElement).classList.add('dragging');
-        emit('drag-start', props.column);
     };
 
     const ondragover = () => {
-        emit('reorder', props.column);
+        if (dragStore.dragType === 'column') {
+            emit('reorder-column', props.column);
+        }
     };
 
     const ondragend = (event: DragEvent) => {
+        dragStore.clearDrag();
+
         const target = event.target as HTMLElement | null;
         
         if (target) {
@@ -48,11 +55,14 @@
   >
     <header class="kanban-column-title">{{ props.column.title }}</header>
     <ul class="kanban-cards-container">
-        <li class="kanban-card-item" v-for="card in cards" :key="card.id">
-            <article class="kanban-card">
-                <h5 class="kanban-card-title">{{ card.title }}</h5>
-                <p class="kanban-card-description">{{ card.description }}</p>
-            </article>
+        <li class="kanban-card-item" 
+            v-for="card in cards" 
+            :key="card.id" 
+            :style="{ order: card.order }">
+                <KanbanCard 
+                    :card="card"
+                    @reorder-card="cardsStore.reorderCards"
+                />
         </li>
     </ul>
   </section>
@@ -69,41 +79,27 @@
     cursor: grab;
 }
 
+.kanban-column.dragging {
+    opacity: 0.7;
+    background-color: var(--vt-c-grey-bright-trasparent);
+}
+
 .kanban-column-title {
     text-transform: uppercase;
     font-size: 13px;
     color: var(--vt-c-black-03);
 }
 
-.dragging {
-    opacity: 0.7;
-    background-color: var(--vt-c-grey-bright-trasparent);
-}
-
 .kanban-cards-container {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .kanban-card-item {
     list-style: none;
-}
-
-.kanban-card-item .kanban-card{
-    margin-top: 8px;
-    padding: 16px;
-    background-color: var(--color-background);
-    border-radius: 8px;
-}
-
-.kanban-card .kanban-card-title {
-    font-weight: 600;
-    margin: 0;
-}
-
-.kanban-card .kanban-card-description {
-    font-size: 14px;;
-    color: var(--vt-c-black-03);
-    margin: 8px 0 0 0;
 }
 </style>

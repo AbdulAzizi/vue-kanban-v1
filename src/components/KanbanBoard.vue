@@ -3,22 +3,13 @@
     import KanbanColumn from './KanbanColumn.vue';
     import KanbanColumnForm from './KanbanColumnForm.vue';
     import { useColumnsStore } from '@/stores/columns';
-    import { useCardsStore } from '@/stores/cards';
-
-    const {
-        columns,
-        setDraggedColumn,
-        reorderColumns,
-        shuffleColumns,
-        addColumn,
-    } = useColumnsStore();
-
-    const { getCardsForColumn } = useCardsStore();
 
     const displayColumnForm = ref(false);
+
+    const columnsStore = useColumnsStore();
     
     const handleAddColumn = (title: string) => {
-        addColumn(title);
+        columnsStore.addColumn(title);
         displayColumnForm.value = false;
     };
 </script>
@@ -27,13 +18,11 @@
     <div class="kanban-container">
         <section class="kabnban-columns" aria-label="Kanban Board">
             <KanbanColumn 
-                v-for="column in columns" 
+                v-for="column in columnsStore.columns" 
                 :key="column.id" 
                 :column="column"
-                :cards="getCardsForColumn(column.id).value"
                 :style="{ order: column.order }"
-                @drag-start="setDraggedColumn"
-                @reorder="reorderColumns"
+                @reorder-column="columnsStore.reorderColumns"
             />
             <KanbanColumnForm
                 v-if="displayColumnForm"
@@ -49,7 +38,7 @@
                         <img alt="" src="../assets/plus.svg" class="icon" />
                         <span>New Column</span>
                     </button>
-                    <button @click="shuffleColumns" type="button" class="button icon-button">
+                    <button @click="columnsStore.shuffleColumns" type="button" class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Columns</span>
                     </button>

@@ -1,15 +1,18 @@
-import { ref, computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import { useColumnsStore } from './columns';
 import type { KanbanCardType } from '@/types/kanbanTypes';
+import { useDragStore } from './dragStore';
 
 export const useCardsStore = defineStore('cards', () => {
     const { columns } = useColumnsStore();
-    const cards = ref<KanbanCardType[]>([]);
+    const cards = reactive<KanbanCardType[]>([]);
+
+    const dragStore = useDragStore();
 
     columns.forEach((column, index) => {
         for (let i = 1; i <= 3; i++) {
-            cards.value.push({
+            cards.push({
                 columnId: column.id,
                 id: crypto.randomUUID(),
                 title: `Card in ${column.title} - ${i}`,
@@ -22,10 +25,29 @@ export const useCardsStore = defineStore('cards', () => {
     });
 
     const getCardsForColumn = (columnId: string) =>
-        computed(() => cards.value.filter(card => card.columnId === columnId));
+        computed(() => cards.filter(card => card.columnId === columnId));
+
+    const reorderCards = (hoveredCard: KanbanCardType) => {
+        const dragData = dragStore.dragData;
+        if (!dragData || dragData.id === hoveredCard.id) return;
+
+        const fromCard = cards.find(card => card.id === dragData.id);
+        const toCard = cards.find(card => card.id === hoveredCard.id);
+
+        if (!fromCard || !toCard) return;
+
+        if (fromCard.columnId !== toCard.columnId) {
+            fromCard.columnId = toCard.columnId;
+        }
+
+        const tempOrder = fromCard.order;
+        fromCard.order = toCard.order;
+        toCard.order = tempOrder;
+    };
 
     return {
         cards,
         getCardsForColumn,
+        reorderCards,
     }
 });

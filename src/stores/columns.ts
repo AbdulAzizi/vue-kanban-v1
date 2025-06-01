@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { KanbanColumnType } from '@/types/kanbanTypes';
+import { useDragStore } from './dragStore';
 
 export const useColumnsStore = defineStore('columns', () => {
+    const dragStore = useDragStore();
+
     const columns = ref<KanbanColumnType[]>([
         { id: crypto.randomUUID(), title: 'Todo', order: 1 },
         { id: crypto.randomUUID(), title: 'In progress', order: 2 },
@@ -11,16 +14,10 @@ export const useColumnsStore = defineStore('columns', () => {
         { id: crypto.randomUUID(), title: 'Archive', order: 5 },
     ]);
 
-    const draggedColumn = ref<KanbanColumnType | null>(null);
-
-    const setDraggedColumn = (column: KanbanColumnType) => {
-        draggedColumn.value = column;
-    };
-
     const reorderColumns = (hoveredColumn: KanbanColumnType) => {
-        if (!draggedColumn.value || draggedColumn.value.id === hoveredColumn.id) return;
+        if (!dragStore.dragData || dragStore.dragData.id === hoveredColumn.id) return;
 
-        const from = draggedColumn.value;
+        const from = dragStore.dragData;
         const to = hoveredColumn;
 
         const temp = from.order;
@@ -50,7 +47,6 @@ export const useColumnsStore = defineStore('columns', () => {
 
     return {
         columns,
-        setDraggedColumn,
         reorderColumns,
         shuffleColumns,
         addColumn,
