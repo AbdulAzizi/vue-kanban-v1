@@ -27,7 +27,7 @@ export const useCardsStore = defineStore('cards', () => {
     const getCardsForColumn = (columnId: string) =>
         computed(() => cards.filter(card => card.columnId === columnId));
 
-    const reorderCards = (hoveredCard: KanbanCardType) => {
+    const swapCards = (hoveredCard: KanbanCardType) => {
         const dragData = dragStore.dragData;
         if (!dragData || dragData.id === hoveredCard.id) return;
 
@@ -48,6 +48,6 @@ export const useCardsStore = defineStore('cards', () => {
     return {
         cards,
         getCardsForColumn,
-        reorderCards,
+        swapCards,
     }
 });

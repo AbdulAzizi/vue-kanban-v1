@@ -61,7 +61,7 @@
             :style="{ order: card.order }">
                 <KanbanCard 
                     :card="card"
-                    @reorder-card="cardsStore.reorderCards"
+                    @reorder-card="cardsStore.swapCards"
                 />
         </li>
     </ul>
