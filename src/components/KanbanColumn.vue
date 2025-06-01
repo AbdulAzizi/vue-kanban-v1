@@ -1,8 +1,12 @@
 <script lang="ts" setup>
-    import type { KanbanColumnType } from '../types/kanbanTypes';
+    import type { 
+        KanbanColumnType, 
+        KanbanCardType 
+    } from '../types/kanbanTypes';
 
     const props = defineProps<{
-        column: KanbanColumnType
+        column: KanbanColumnType,
+        cards: KanbanCardType[],
     }>();
 
     const emit = defineEmits<{
@@ -34,7 +38,7 @@
 </script>
 
 <template>
-  <article 
+  <section 
     class="kanban-column" 
     :aria-label="props.column.title"
     @dragend="ondragend"
@@ -42,8 +46,16 @@
     @dragstart="ondragstart"
     :draggable="true"
   >
-    <span class="kanban-column-title">{{ props.column.title }}</span>
-  </article>
+    <header class="kanban-column-title">{{ props.column.title }}</header>
+    <ul class="kanban-cards-container">
+        <li class="kanban-card-item" v-for="card in cards" :key="card.id">
+            <article class="kanban-card">
+                <h5 class="kanban-card-title">{{ card.title }}</h5>
+                <p class="kanban-card-description">{{ card.description }}</p>
+            </article>
+        </li>
+    </ul>
+  </section>
 </template>
 
 
@@ -66,5 +78,32 @@
 .dragging {
     opacity: 0.7;
     background-color: var(--vt-c-grey-bright-trasparent);
+}
+
+.kanban-cards-container {
+    margin: 0;
+    padding: 0;
+}
+
+.kanban-card-item {
+    list-style: none;
+}
+
+.kanban-card-item .kanban-card{
+    margin-top: 8px;
+    padding: 16px;
+    background-color: var(--color-background);
+    border-radius: 8px;
+}
+
+.kanban-card .kanban-card-title {
+    font-weight: 600;
+    margin: 0;
+}
+
+.kanban-card .kanban-card-description {
+    font-size: 14px;;
+    color: var(--vt-c-black-03);
+    margin: 8px 0 0 0;
 }
 </style>

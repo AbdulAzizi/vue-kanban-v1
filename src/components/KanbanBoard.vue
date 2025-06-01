@@ -3,6 +3,7 @@
     import KanbanColumn from './KanbanColumn.vue';
     import KanbanColumnForm from './KanbanColumnForm.vue';
     import { useColumnsStore } from '@/stores/columns';
+    import { useCardsStore } from '@/stores/cards';
 
     const {
         columns,
@@ -11,6 +12,8 @@
         shuffleColumns,
         addColumn,
     } = useColumnsStore();
+
+    const { getCardsForColumn } = useCardsStore();
 
     const displayColumnForm = ref(false);
     
@@ -27,6 +30,7 @@
                 v-for="column in columns" 
                 :key="column.id" 
                 :column="column"
+                :cards="getCardsForColumn(column.id).value"
                 :style="{ order: column.order }"
                 @drag-start="setDraggedColumn"
                 @reorder="reorderColumns"

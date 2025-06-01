@@ -3,6 +3,7 @@ export interface KanbanCardType {
     title: string;
     description: string;
     order: number;
+    columnId: KanbanColumnType["id"];
 }
 
 export interface KanbanColumnType {

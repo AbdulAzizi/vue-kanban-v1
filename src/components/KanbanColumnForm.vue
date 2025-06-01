@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <article class="kanban-column kanban-column-form">
+    <section class="kanban-column kanban-column-form">
         <input
             ref="inputRef"
             v-model="title"
@@ -40,7 +40,7 @@
             <button @click="save" class="button primary">Save</button>
             <button @click="cancel" class="button secondary">Cancel</button>
         </div>
-    </article>
+    </section>
 </template>
 
 <style scoped>
