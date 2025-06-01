@@ -25,6 +25,17 @@
     onMounted(() => {
         inputRef.value?.focus();
     });
+
+    const handleKeydown = (e: KeyboardEvent) => {
+        switch (e.key) {
+            case 'Enter':
+                save();
+                break;
+            case 'Escape':
+                cancel();
+                break;
+        }
+    };
 </script>
 
 <template>
@@ -35,6 +46,7 @@
             type="text"
             placeholder="Enter column title"
             class="column-input"
+            @keydown="handleKeydown"
         />
         <div class="form-actions">
             <button @click="save" class="button primary">Save</button>
