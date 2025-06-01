@@ -10,8 +10,13 @@
 
     const save = () => {
         if (title.value.trim()) {
-        emit('save', title.value.trim());
-        title.value = '';
+            emit('save', title.value.trim());
+            title.value = '';
+        } else {
+            inputRef.value?.classList.add('error');
+            setTimeout(function() {
+                inputRef.value?.classList.remove('error');
+            }, 300);
         }
     };
 
@@ -105,5 +110,16 @@
 
 .secondary:hover {
     background-color: var(--vt-c-black-015);
+}
+
+.error {
+    position: relative;
+    animation: shake .1s linear;
+    animation-iteration-count: 3;
+}
+
+@keyframes shake {
+    0% { left: -3px; }
+    100% { right: -3px; }
 }
 </style>
