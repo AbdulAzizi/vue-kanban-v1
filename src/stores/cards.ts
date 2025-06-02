@@ -53,7 +53,7 @@ export const useCardsStore = defineStore('cards', () => {
     };
 
     const shuffleCards = () => {
-        const columnIds = columns.map(col => col.id);
+        const columnIds = columnsStore.columns.map(col => col.id);
         cards.forEach(card => {
             card.columnId = columnIds[Math.floor(Math.random() * columnIds.length)];
         });

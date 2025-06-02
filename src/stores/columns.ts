@@ -50,11 +50,19 @@ export const useColumnsStore = defineStore('columns', () => {
         }
     };
 
+    const renameColumn = (columnId: string, newTitle: string) =>{
+        const column = columns.value.find(c => c.id === columnId);
+        if (column) {
+            column.title = newTitle.trim();
+        }
+    }
+
     return {
         columns,
         reorderColumns,
         shuffleColumns,
         addColumn,
         deleteColumn,
+        renameColumn,
     };
 });

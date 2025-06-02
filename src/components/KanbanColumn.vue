@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
     import type { KanbanColumnType } from '../types/kanbanTypes';
     import KanbanCard from './KanbanCard.vue';
     import { useDragStore } from '@/stores/drag';
@@ -19,14 +19,27 @@
     const disabled = ref(props.disabled);
     const ascending = ref(true);
 
+    const titleEl = ref<HTMLElement | null>(null);
+    const draftTitle = ref(props.column.title);
+
+    onMounted(() => {
+        if (titleEl.value) {
+            titleEl.value.innerText = draftTitle.value;
+        }
+    });
+
     watch(() => props.disabled, (newVal) => {
         disabled.value = newVal;
+    });
+
+    watch(() => props.column.title, (newVal) => {
+        draftTitle.value = newVal;
     });
 
     const dragStore = useDragStore();
     const cardsStore = useCardsStore();
     const columnsStore = useColumnsStore();
-    const cards = cardsStore.getCardsForColumn(props.column.id)
+    const cards = cardsStore.getCardsForColumn(props.column.id);
 
     const ondragstart = (event: DragEvent) => {
         if (disabled.value) return;
@@ -82,6 +95,21 @@
         columnsStore.deleteColumn(props.column.id)
     }
 
+    const onTitleChange = () => {
+        if (titleEl.value) {
+            draftTitle.value = titleEl.value.innerText;
+        }
+    };
+
+    const saveTitle = () => {
+        if (draftTitle.value !== props.column.title) {
+            columnsStore.renameColumn(props.column.id, draftTitle.value.trim());
+        }
+        titleEl.value?.blur();
+    };
+
+    
+
 </script>
 
 <template>
@@ -95,10 +123,17 @@
     :draggable="!disabled"
   >
     <header class="kanban-column-title kanban-column-header">
-        <h2 class="kanban-column-heading">
-            {{ props.column.title }}
+        <div class="title-container">
+            <h2 
+                ref="titleEl"
+                class="kanban-column-heading"
+                :contenteditable="!disabled"
+                spellcheck="false"
+                @input="onTitleChange"
+                @keydown.enter.prevent="saveTitle"
+            />
             <span v-if="cards.length" aria-label="Number of cards">{{ cards.length }}</span>
-        </h2>
+        </div>
         <nav class="kanban-column-nav">
             <BaseButton
                 @click="disabled = !disabled" 
@@ -222,5 +257,23 @@
     display: flex;
     justify-content: center;
     gap: 4px;
+}
+
+.title-container {
+    display: flex;
+    gap: 5px;
+    justify-content: start;
+    align-items: center;
+    width: 180px;
+    overflow: auto;
+}
+.title-container h2 {
+    max-width: 180px;
+    min-width: 30px;
+    overflow: auto;
+}
+
+.title-container span {
+    font-size: 13px
 }
 </style>
