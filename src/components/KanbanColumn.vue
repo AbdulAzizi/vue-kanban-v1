@@ -4,6 +4,7 @@
     import KanbanCard from './KanbanCard.vue';
     import { useDragStore } from '@/stores/drag';
     import { useCardsStore } from '@/stores/cards';
+    import { useColumnsStore } from '@/stores/columns';
     import BaseButton from './BaseButton.vue';
     
     const props = defineProps<{
@@ -24,6 +25,7 @@
 
     const dragStore = useDragStore();
     const cardsStore = useCardsStore();
+    const columnsStore = useColumnsStore();
     const cards = cardsStore.getCardsForColumn(props.column.id)
 
     const ondragstart = (event: DragEvent) => {
@@ -74,6 +76,12 @@
         ascending.value = !ascending.value;
         cardsStore.sortCardsByTitle(props.column.id, ascending.value);
     };
+
+    const handleColumnDelete = () => {
+        cardsStore.deleteCardsByColumnId(props.column.id);
+        columnsStore.deleteColumn(props.column.id)
+    }
+
 </script>
 
 <template>
@@ -98,6 +106,14 @@
                 :aria-pressed="disabled"
             >
                 {{ disabled ? 'Unlock Editing' : 'Disable Editing' }}
+            </BaseButton>
+            <BaseButton
+                @click="handleColumnDelete" 
+                icon="minus"
+                :aria-pressed="disabled"
+                :disabled="disabled"
+            >
+                Delete Column
             </BaseButton>
         </nav>
     </header>

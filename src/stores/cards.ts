@@ -5,12 +5,12 @@ import type { KanbanCardType } from '@/types/kanbanTypes';
 import { useDragStore } from './drag';
 
 export const useCardsStore = defineStore('cards', () => {
-    const { columns } = useColumnsStore();
+    const columnsStore = useColumnsStore();
     const cards = reactive<KanbanCardType[]>([]);
 
     const dragStore = useDragStore();
 
-    columns.forEach((column, index) => {
+    columnsStore.columns.forEach((column, index) => {
         for (let i = 1; i <= 3; i++) {
             cards.push({
                 columnId: column.id,

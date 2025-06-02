@@ -45,10 +45,18 @@ export const useColumnsStore = defineStore('columns', () => {
         });
     };
 
+    const deleteColumn = (columnId: string) => {
+        const index = columns.value.findIndex(col => col.id === columnId);
+        if (index !== -1) {
+            columns.value.splice(index, 1);
+        }
+    };
+
     return {
         columns,
         reorderColumns,
         shuffleColumns,
         addColumn,
+        deleteColumn,
     };
 });
