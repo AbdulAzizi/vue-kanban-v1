@@ -1,42 +1,43 @@
 <script lang="ts" setup>
-	import { computed } from 'vue';
+import { computed } from 'vue';
 
-	const props = defineProps({
-		icon: {
-			type: String as () => 'close' | 'minus' | 'pause' | 'play' | 'plus' | 'power' | 'shuffle' | 'sort',
-			required: false,
-		},
-		variant: {
-			type: String as () => 'round' | 'tile',
-			default: 'round',
-		},
-		fullWidth: Boolean,
-		color: {
-			type: String,
-			default: 'white',
-		},
-		disabled: Boolean,
-	});
+const props = defineProps({
+	icon: {
+		type: String as () => 'close' | 'minus' | 'pause' | 'play' | 'plus' | 'power' | 'shuffle' | 'sort',
+		required: false,
+	},
+	variant: {
+		type: String as () => 'round' | 'tile',
+		default: 'round',
+	},
+	fullWidth: Boolean,
+	color: {
+		type: String,
+		default: 'white',
+	},
+	disabled: Boolean,
+});
 
-	const emit = defineEmits<{
-		(e: 'click'): void;
-	}>();
+const emit = defineEmits<{
+	(e: 'click'): void;
+}>();
 
-	const classes = computed(() => [
-		'base-button',
-		props.variant,
-		props.fullWidth ? 'full-width' : '',
-		props.disabled ? 'disabled' : '',
-	]);
+const classes = computed(() => [
+	'base-button',
+	props.variant,
+	props.fullWidth ? 'full-width' : '',
+	props.disabled ? 'disabled' : '',
+]);
 
-	const styles = computed(() => ({
-		'--button-bg': props.color,
-	}));
-		
-	const handleClick = () => {
-		if (!props.disabled) emit('click');
-	};
+const styles = computed(() => ({
+	'--button-bg': props.color,
+}));
+
+const handleClick = () => {
+	if (!props.disabled) emit('click');
+};
 </script>
+
 
 <template>
 	<button
@@ -45,7 +46,7 @@
 		:disabled="props.disabled"
 		@click="handleClick"
 	>
-		<img v-if="icon" :src="`/src/assets/${icon}.svg`" alt="" class="icon" />
+		<img v-if="icon" :src="`/assets/${icon}.svg`" alt="" class="icon" />
 		<span><slot /></span>
 	</button>
 </template>
