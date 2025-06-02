@@ -4,6 +4,7 @@
 
     const props = defineProps<{
         card: KanbanCardType,
+        disabled: boolean,
     }>();
 
     const emit = defineEmits<{
@@ -13,6 +14,8 @@
     const dragStore = useDragStore();
 
     const ondragstart = (event: DragEvent) => {
+        if (props.disabled) return;
+
         if (event.dataTransfer) {
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.dropEffect = 'move';
@@ -24,12 +27,16 @@
     };
 
     const ondragover = () => {
+        if (props.disabled) return;
+
         if (dragStore.dragType === 'card') {
             emit('reorder-card', props.card);
         }
     };
 
     const ondragend = (event: DragEvent) => {
+        if (props.disabled) return;
+
         dragStore.clearDrag();
         
         const target = event.target as HTMLElement | null;
@@ -47,7 +54,7 @@
     @dragend="ondragend"
     @dragover.prevent="ondragover"
     @dragstart.stop="ondragstart"
-    :draggable="true"
+    :draggable="!disabled"
   >
     <h5 class="kanban-card-title">{{ props.card.title }} ({{ props.card.order }})</h5>
     <p class="kanban-card-description">{{ props.card.description }}</p>

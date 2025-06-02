@@ -4,11 +4,13 @@
     import KanbanColumnForm from './KanbanColumnForm.vue';
     import { useColumnsStore } from '@/stores/columns';
     import { useCardsStore } from '@/stores/cards';
+    import { useUIStore } from '@/stores/ui';
 
     const displayColumnForm = ref(false);
 
     const columnsStore = useColumnsStore();
     const cardsStore = useCardsStore();
+    const uiStore = useUIStore();
     
     const handleAddColumn = (title: string) => {
         columnsStore.addColumn(title);
@@ -18,13 +20,17 @@
 
 <template>
     <div class="kanban-container">
-        <section class="kabnban-columns" aria-label="Kanban Board">
+        <section
+        class="kabnban-columns" 
+        :class="{ disabled: uiStore.readonly }"
+        aria-label="Kanban Board">
             <KanbanColumn 
                 v-for="column in columnsStore.columns" 
                 :key="column.id" 
                 :column="column"
                 :style="{ order: column.order }"
                 @reorder-column="columnsStore.reorderColumns"
+                :disabled="uiStore.readonly" 
             />
             <KanbanColumnForm
                 v-if="displayColumnForm"
@@ -36,21 +42,36 @@
         <footer class="kanban-footer">
             <div class="kanban-actions">
                 <div class="buttons-row">
-                    <button @click="displayColumnForm = true" type="button" class="button icon-button">
+                    <button 
+                    :disabled="uiStore.readonly" 
+                    @click="displayColumnForm = true" 
+                    type="button" 
+                    class="button icon-button">
                         <img alt="" src="../assets/plus.svg" class="icon" />
                         <span>New Column</span>
                     </button>
-                    <button @click="columnsStore.shuffleColumns" type="button" class="button icon-button">
+                    <button 
+                    :disabled="uiStore.readonly" 
+                    @click="columnsStore.shuffleColumns" 
+                    type="button" 
+                    class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Columns</span>
                     </button>
-                    <button @click="cardsStore.shuffleCards" type="button" class="button icon-button">
+                    <button 
+                    :disabled="uiStore.readonly" 
+                    @click="cardsStore.shuffleCards" 
+                    type="button" 
+                    class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Cards</span>
                     </button>
-                    <button type="button" class="button icon-button">
+                    <button 
+                    @click="uiStore.toggleReadonly" 
+                    type="button" 
+                    class="button icon-button">
                         <img alt="" src="../assets/pause.svg" class="icon" />
-                        <span>Disable Editing</span>
+                        <span>{{ uiStore.readonly ? 'Enable Editing' : 'Disable Editing' }}</span>
                     </button>
                 </div>
                 <div class="label">Board Actions</div>
@@ -66,6 +87,9 @@
     justify-content: space-between;
     height: 100%;
     box-sizing: border-box;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .kabnban-columns {
@@ -76,6 +100,9 @@
     justify-content: flex-start;
     align-items: stretch;
     overflow-x: auto;
+}
+.kabnban-columns.disabled {
+    opacity: 0.6;
 }
 
 .kabnban-columns::-webkit-scrollbar {
@@ -109,11 +136,14 @@
     background-color: var(--color-button-light);
     border-radius: 16px;
     border: 2px solid var(--vt-c-black-005);
-    cursor: pointer;
     transition: background-color 0.2s;
 }
 
-.kanban-footer .button:hover {
+.kanban-footer .button:not(:disabled) {
+    cursor: pointer;
+}
+
+.kanban-footer .button:not(:disabled):hover {
     border-color: transparent;
     background-color: var(--vt-c-black-005);
 }

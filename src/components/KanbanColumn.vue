@@ -5,7 +5,8 @@
     import { useCardsStore } from '@/stores/cards';
     
     const props = defineProps<{
-        column: KanbanColumnType
+        column: KanbanColumnType,
+        disabled: boolean,
     }>();
     
     const emit = defineEmits<{
@@ -17,6 +18,8 @@
     const cards = cardsStore.getCardsForColumn(props.column.id)
 
     const ondragstart = (event: DragEvent) => {
+        if (props.disabled) return;
+
         if (event.dataTransfer) {
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.dropEffect = 'move';
@@ -28,6 +31,8 @@
     };
 
     const ondragover = () => {
+        if (props.disabled) return;
+
         if (dragStore.dragType === 'column') {
             emit('reorder-column', props.column);
         }
@@ -37,6 +42,8 @@
     };
 
     const ondragend = (event: DragEvent) => {
+        if (props.disabled) return;
+
         dragStore.clearDrag();
 
         const target = event.target as HTMLElement | null;
@@ -54,7 +61,7 @@
     @dragend="ondragend"
     @dragover.prevent="ondragover"
     @dragstart="ondragstart"
-    :draggable="true"
+    :draggable="!disabled"
   >
     <header class="kanban-column-title">{{ props.column.title }}</header>
     <ul class="kanban-cards-container">
@@ -65,6 +72,7 @@
                 <KanbanCard 
                     :card="card"
                     @reorder-card="cardsStore.swapCards"
+                    :disabled="disabled"
                 />
         </li>
     </ul>
