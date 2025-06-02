@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+    import { ref, watch } from 'vue';
     import type { KanbanColumnType } from '../types/kanbanTypes';
     import KanbanCard from './KanbanCard.vue';
     import { useDragStore } from '@/stores/drag';
     import { useCardsStore } from '@/stores/cards';
+    import BaseButton from './BaseButton.vue';
     
     const props = defineProps<{
         column: KanbanColumnType,
@@ -13,12 +15,18 @@
         (e: 'reorder-column', column: KanbanColumnType): void
     }>();
     
+    const disabled = ref(props.disabled);
+
+    watch(() => props.disabled, (newVal) => {
+        disabled.value = newVal;
+    });
+
     const dragStore = useDragStore();
     const cardsStore = useCardsStore();
     const cards = cardsStore.getCardsForColumn(props.column.id)
 
     const ondragstart = (event: DragEvent) => {
-        if (props.disabled) return;
+        if (disabled.value) return;
 
         if (event.dataTransfer) {
             event.dataTransfer.effectAllowed = 'move';
@@ -31,7 +39,7 @@
     };
 
     const ondragover = () => {
-        if (props.disabled) return;
+        if (disabled.value) return;
 
         if (dragStore.dragType === 'column') {
             emit('reorder-column', props.column);
@@ -42,7 +50,7 @@
     };
 
     const ondragend = (event: DragEvent) => {
-        if (props.disabled) return;
+        if (disabled.value) return;
 
         dragStore.clearDrag();
 
@@ -56,14 +64,29 @@
 
 <template>
   <section 
-    class="kanban-column" 
+    class="kanban-column"
+    :class="{ disabled }"
     :aria-label="props.column.title"
     @dragend="ondragend"
     @dragover.prevent="ondragover"
     @dragstart="ondragstart"
     :draggable="!disabled"
   >
-    <header class="kanban-column-title">{{ props.column.title }}</header>
+    <header class="kanban-column-title kanban-column-header">
+        <h2 class="kanban-column-heading">
+            {{ props.column.title }}
+            <span v-if="cards.length" aria-label="Number of cards">{{ cards.length }}</span>
+        </h2>
+        <nav class="kanban-column-nav">
+            <BaseButton
+                @click="disabled = !disabled" 
+                :icon="disabled ? 'play' : 'pause'"
+                :aria-pressed="disabled"
+            >
+                {{ disabled ? 'Unlock Editing' : 'Disable Editing' }}
+            </BaseButton>
+        </nav>
+    </header>
     <ul class="kanban-cards-container">
         <li class="kanban-card-item" 
             v-for="card in cards" 
@@ -94,10 +117,16 @@
     background-color: var(--vt-c-grey-bright-trasparent);
 }
 
-.kanban-column-title {
+.kanban-column.disabled {
+    background-color: var(--vt-c-grey-bright-2);
+}
+
+.kanban-column-heading {
+    font-weight: 400;
     text-transform: uppercase;
     font-size: 13px;
     color: var(--vt-c-black-03);
+    margin: 0;
 }
 
 .kanban-cards-container {
@@ -109,7 +138,18 @@
     overflow-y: auto;
 }
 
+.disabled .kanban-cards-container {
+    opacity: 0.5;
+}
+
 .kanban-card-item {
     list-style: none;
+}
+
+.kanban-column-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 </style>

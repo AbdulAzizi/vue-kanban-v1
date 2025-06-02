@@ -22,8 +22,7 @@
 <template>
     <div class="kanban-container">
         <section
-        class="kabnban-columns" 
-        :class="{ disabled: uiStore.readonly }"
+        class="kanban-columns"
         aria-label="Kanban Board">
             <KanbanColumn 
                 v-for="column in columnsStore.columns" 
@@ -66,8 +65,8 @@
 
                     <BaseButton
                     @click="uiStore.toggleReadonly" 
-                    icon="pause">
-                        {{ uiStore.readonly ? 'Enable Editing' : 'Disable Editing' }}
+                    :icon="uiStore.readonly ? 'play' : 'pause'">
+                        {{ uiStore.readonly ? 'Unlock Editing' : 'Disable Editing'}}
                     </BaseButton>
                 </div>
                 <div class="label">Board Actions</div>
@@ -88,7 +87,7 @@
     user-select: none;
 }
 
-.kabnban-columns {
+.kanban-columns {
     flex: 1;
     display: flex;
     gap: 24px;
@@ -97,15 +96,12 @@
     align-items: stretch;
     overflow-x: auto;
 }
-.kabnban-columns.disabled {
-    opacity: 0.6;
-}
 
-.kabnban-columns::-webkit-scrollbar {
+.kanban-columns::-webkit-scrollbar {
     height: 8px;
 }
 
-.kabnban-columns::-webkit-scrollbar-thumb {
+.kanban-columns::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
