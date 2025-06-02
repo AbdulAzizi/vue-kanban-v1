@@ -9,9 +9,7 @@ export const useColumnsStore = defineStore('columns', () => {
     const columns = ref<KanbanColumnType[]>([
         { id: crypto.randomUUID(), title: 'Todo', order: 1 },
         { id: crypto.randomUUID(), title: 'In progress', order: 2 },
-        { id: crypto.randomUUID(), title: 'Done', order: 3 },
-        { id: crypto.randomUUID(), title: 'Backlog', order: 4 },
-        { id: crypto.randomUUID(), title: 'Archive', order: 5 },
+        { id: crypto.randomUUID(), title: 'Done', order: 3 }
     ]);
 
     const reorderColumns = (hoveredColumn: KanbanColumnType) => {
