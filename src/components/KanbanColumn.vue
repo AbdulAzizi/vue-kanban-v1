@@ -87,7 +87,6 @@
     background-color: var(--color-column-background);
     border-radius: 12px;
     padding: 16px;
-    cursor: grab;
 }
 
 .kanban-column.dragging {
