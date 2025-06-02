@@ -137,10 +137,10 @@
             Sort: {{ ascending ? 'Ascending' : 'Descending' }}
         </BaseButton>
         <BaseButton
-            @click="disabled = !disabled" 
+            @click="cardsStore.deleteCardsByColumnId(props.column.id)" 
             icon="close"
             :aria-pressed="disabled"
-            :disabled="true"
+            :disabled="disabled"
         >
             Clear All
         </BaseButton>

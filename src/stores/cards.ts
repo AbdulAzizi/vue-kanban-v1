@@ -86,6 +86,11 @@ export const useCardsStore = defineStore('cards', () => {
         });
     };
 
+    const deleteCardsByColumnId = (columnId: string) => {
+        const remaining = cards.filter(card => card.columnId !== columnId);
+        cards.splice(0, cards.length, ...remaining);
+    };
+
     return {
         addCard,
         changeCardColumn,
@@ -94,5 +99,6 @@ export const useCardsStore = defineStore('cards', () => {
         swapCards,
         shuffleCards,
         sortCardsByTitle,
+        deleteCardsByColumnId,
     }
 });
