@@ -60,7 +60,7 @@
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
-	gap: 6px;
+	gap: 4px;
 	transition: all 0.2s;
 	background-color: var(--button-bg, white);
 }
@@ -68,7 +68,7 @@
 .base-button.round {
 	border-radius: 16px;
 	height: 24px;
-	padding: 0 10px;
+	padding: 0 8px 0 4px;
 	border: 2px solid var(--vt-c-black-005);
 }
 

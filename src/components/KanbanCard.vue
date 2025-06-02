@@ -145,9 +145,8 @@
 			spellcheck="false"
 			@keyup="onTextChange"
 		></p>
-		<footer contenteditable="false">
+		<footer v-if="isEditing" contenteditable="false">
 			<BaseButton
-				v-if="isEditing"
 				icon="power"
 				style="margin-right: 8px"
 				@click="save"
@@ -156,7 +155,6 @@
 				Save changes
 			</BaseButton>
 			<BaseButton
-				v-if="isEditing"
 				@click="cancel"
 				icon="minus"
 				:disabled="!isDirty"
@@ -198,5 +196,10 @@
 
 .kanban-card.dragging {
 	opacity: 0.5;
+}
+
+.kanban-card footer {
+    justify-content: start;
+    gap: 0px;
 }
 </style>

@@ -70,6 +70,22 @@ export const useCardsStore = defineStore('cards', () => {
         cards.push(newCard);
     };
 
+    const sortCardsByTitle = (columnId: string, ascending: boolean = true) => {
+        const cardsInColumn = cards
+            .filter(card => card.columnId === columnId)
+            .sort((a, b) => {
+                const titleA = a.title.toLowerCase();
+                const titleB = b.title.toLowerCase();
+                return ascending
+                    ? titleA.localeCompare(titleB)
+                    : titleB.localeCompare(titleA);
+            });
+
+        cardsInColumn.forEach((card, index) => {
+            card.order = index + 1;
+        });
+    };
+
     return {
         addCard,
         changeCardColumn,
@@ -77,5 +93,6 @@ export const useCardsStore = defineStore('cards', () => {
         getCardsForColumn,
         swapCards,
         shuffleCards,
+        sortCardsByTitle,
     }
 });

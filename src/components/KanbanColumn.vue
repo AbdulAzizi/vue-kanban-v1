@@ -16,6 +16,7 @@
     }>();
     
     const disabled = ref(props.disabled);
+    const ascending = ref(true);
 
     watch(() => props.disabled, (newVal) => {
         disabled.value = newVal;
@@ -67,6 +68,11 @@
             description: 'Add description',
             columnId: props.column.id
         });
+    };
+
+    const handleSortCardsByTitle = () => {
+        ascending.value = !ascending.value;
+        cardsStore.sortCardsByTitle(props.column.id, ascending.value);
     };
 </script>
 
@@ -121,6 +127,24 @@
             </BaseButton>
         </li>
     </ul>
+    <footer>
+        <BaseButton
+            @click="handleSortCardsByTitle"
+            icon="sort"
+            :aria-pressed="disabled"
+            :disabled="disabled"
+        >
+            Sort: {{ ascending ? 'Ascending' : 'Descending' }}
+        </BaseButton>
+        <BaseButton
+            @click="disabled = !disabled" 
+            icon="close"
+            :aria-pressed="disabled"
+            :disabled="true"
+        >
+            Clear All
+        </BaseButton>
+    </footer>
   </section>
 </template>
 
@@ -175,5 +199,12 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+}
+
+.kanban-column footer {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
 }
 </style>
