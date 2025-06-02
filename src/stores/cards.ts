@@ -91,6 +91,14 @@ export const useCardsStore = defineStore('cards', () => {
         cards.splice(0, cards.length, ...remaining);
     };
 
+
+    const deleteCardById = (cardId: string) => {
+        const index = cards.findIndex(card => card.id === cardId);
+        if (index !== -1) {
+            cards.splice(index, 1);
+        }
+    };
+
     return {
         addCard,
         changeCardColumn,
@@ -100,5 +108,6 @@ export const useCardsStore = defineStore('cards', () => {
         shuffleCards,
         sortCardsByTitle,
         deleteCardsByColumnId,
+        deleteCardById,
     }
 });

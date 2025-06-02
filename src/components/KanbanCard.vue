@@ -2,6 +2,7 @@
 	import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 	import type { KanbanCardType } from '../types/kanbanTypes';
 	import { useDragStore } from '@/stores/drag';
+	import { useCardsStore } from '@/stores/cards';
 	import BaseButton from './BaseButton.vue';
 
 	const props = defineProps<{
@@ -30,6 +31,7 @@
 	);
 
 	const dragStore = useDragStore();
+	const cardsStore = useCardsStore();
 
 	const ondragstart = (event: DragEvent) => {
 		if (props.disabled) return;
@@ -128,6 +130,12 @@
                 break;
         }
     };
+
+	const onRightClick = () => {
+		if (props.disabled) return;
+		
+		cardsStore.deleteCardById(props.card.id)
+	};
 </script>
 
 <template>
@@ -142,6 +150,7 @@
 		:draggable="!disabled"
 		@dblclick="isEditing = (!isEditing && !disabled)"
 		@keydown="handleKeydown"
+		@contextmenu.prevent="onRightClick"
 	>
 		<h5
 			ref="titleEl"
