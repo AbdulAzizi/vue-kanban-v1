@@ -3,10 +3,12 @@
     import KanbanColumn from './KanbanColumn.vue';
     import KanbanColumnForm from './KanbanColumnForm.vue';
     import { useColumnsStore } from '@/stores/columns';
+    import { useCardsStore } from '@/stores/cards';
 
     const displayColumnForm = ref(false);
 
     const columnsStore = useColumnsStore();
+    const cardsStore = useCardsStore();
     
     const handleAddColumn = (title: string) => {
         columnsStore.addColumn(title);
@@ -42,7 +44,7 @@
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Columns</span>
                     </button>
-                    <button type="button" class="button icon-button">
+                    <button @click="cardsStore.shuffleCards" type="button" class="button icon-button">
                         <img alt="" src="../assets/shuffle.svg" class="icon" />
                         <span>Shuffle Cards</span>
                     </button>
