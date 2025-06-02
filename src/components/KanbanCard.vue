@@ -117,6 +117,17 @@
 	onBeforeUnmount(() => {
 		document.removeEventListener('click', onClickOutside);
 	});
+
+	const handleKeydown = (e: KeyboardEvent) => {
+        switch (e.key) {
+            case 'Enter':
+                save();
+                break;
+            case 'Escape':
+                cancel();
+                break;
+        }
+    };
 </script>
 
 <template>
@@ -130,6 +141,7 @@
 		@dragstart.stop="ondragstart"
 		:draggable="!disabled"
 		@dblclick="isEditing = (!isEditing && !disabled)"
+		@keydown="handleKeydown"
 	>
 		<h5
 			ref="titleEl"
