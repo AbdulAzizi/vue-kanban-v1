@@ -31,6 +31,9 @@
         if (dragStore.dragType === 'column') {
             emit('reorder-column', props.column);
         }
+        if (dragStore.dragType === 'card' && dragStore.dragData) {
+            cardsStore.changeCardColumn(props.column.id, dragStore.dragData.id);
+        }
     };
 
     const ondragend = (event: DragEvent) => {

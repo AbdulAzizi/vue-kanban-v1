@@ -45,7 +45,15 @@ export const useCardsStore = defineStore('cards', () => {
         toCard.order = tempOrder;
     };
 
+    const changeCardColumn = (columnId: string, cardId: string) => {
+        const card = cards.find(c => c.id === cardId);
+        if (card) {
+            card.columnId = columnId;
+        }
+    };  
+
     return {
+        changeCardColumn,
         cards,
         getCardsForColumn,
         swapCards,
