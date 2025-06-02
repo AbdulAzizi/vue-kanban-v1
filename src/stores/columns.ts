@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { KanbanColumnType } from '@/types/kanbanTypes';
-import { useDragStore } from './dragStore';
+import { useDragStore } from './drag';
 
 export const useColumnsStore = defineStore('columns', () => {
     const dragStore = useDragStore();

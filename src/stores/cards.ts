@@ -2,7 +2,7 @@ import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import { useColumnsStore } from './columns';
 import type { KanbanCardType } from '@/types/kanbanTypes';
-import { useDragStore } from './dragStore';
+import { useDragStore } from './drag';
 
 export const useCardsStore = defineStore('cards', () => {
     const { columns } = useColumnsStore();

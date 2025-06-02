@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import type { KanbanCardType } from '../types/kanbanTypes';
-    import { useDragStore } from '@/stores/dragStore';
+    import { useDragStore } from '@/stores/drag';
 
     const props = defineProps<{
         card: KanbanCardType,

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import type { KanbanColumnType } from '../types/kanbanTypes';
     import KanbanCard from './KanbanCard.vue';
-    import { useDragStore } from '@/stores/dragStore';
+    import { useDragStore } from '@/stores/drag';
     import { useCardsStore } from '@/stores/cards';
     
     const props = defineProps<{
