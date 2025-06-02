@@ -60,6 +60,14 @@
             target.classList.remove('dragging');
         }
     };
+
+    const handleNewCard = () => {
+        cardsStore.addCard({
+            title: 'Add title',
+            description: 'Add description',
+            columnId: props.column.id
+        });
+    };
 </script>
 
 <template>
@@ -98,6 +106,20 @@
                     :disabled="disabled"
                 />
         </li>
+        <li class="kanban-card-item"
+            style="order: 99999999;
+            margin-top: 8px;">
+            <BaseButton
+                @click="handleNewCard" 
+                icon="plus"
+                :aria-pressed="disabled"
+                variant="tile"
+                color="var(--vt-c-grey)"
+                :disabled="disabled"
+            >
+                New Card
+            </BaseButton>
+        </li>
     </ul>
   </section>
 </template>
@@ -110,6 +132,8 @@
     background-color: var(--color-column-background);
     border-radius: 12px;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
 .kanban-column.dragging {

@@ -59,7 +59,19 @@ export const useCardsStore = defineStore('cards', () => {
         });
     };
 
+    const addCard = ({ columnId, title, description }: { columnId: string; title: string; description: string }) => {
+        const newCard: KanbanCardType = {
+            columnId,
+            id: crypto.randomUUID(),
+            title,
+            description,
+            order: cards.length + 1,
+        };
+        cards.push(newCard);
+    };
+
     return {
+        addCard,
         changeCardColumn,
         cards,
         getCardsForColumn,
