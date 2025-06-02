@@ -5,6 +5,7 @@
     import { useColumnsStore } from '@/stores/columns';
     import { useCardsStore } from '@/stores/cards';
     import { useUIStore } from '@/stores/ui';
+    import BaseButton from './BaseButton.vue';
 
     const displayColumnForm = ref(false);
 
@@ -42,37 +43,32 @@
         <footer class="kanban-footer">
             <div class="kanban-actions">
                 <div class="buttons-row">
-                    <button 
-                    :disabled="uiStore.readonly" 
+                    <BaseButton
+                    :disabled="uiStore.readonly"
                     @click="displayColumnForm = true" 
-                    type="button" 
-                    class="button icon-button">
-                        <img alt="" src="../assets/plus.svg" class="icon" />
-                        <span>New Column</span>
-                    </button>
-                    <button 
+                    icon="plus">
+                        New Column
+                    </BaseButton>
+
+                    <BaseButton
                     :disabled="uiStore.readonly" 
                     @click="columnsStore.shuffleColumns" 
-                    type="button" 
-                    class="button icon-button">
-                        <img alt="" src="../assets/shuffle.svg" class="icon" />
-                        <span>Shuffle Columns</span>
-                    </button>
-                    <button 
-                    :disabled="uiStore.readonly" 
+                    icon="shuffle">
+                        Shuffle Columns
+                    </BaseButton>
+
+                    <BaseButton
+                    :disabled="uiStore.readonly"
                     @click="cardsStore.shuffleCards" 
-                    type="button" 
-                    class="button icon-button">
-                        <img alt="" src="../assets/shuffle.svg" class="icon" />
-                        <span>Shuffle Cards</span>
-                    </button>
-                    <button 
+                    icon="shuffle">
+                        Shuffle Cards
+                    </BaseButton>
+
+                    <BaseButton
                     @click="uiStore.toggleReadonly" 
-                    type="button" 
-                    class="button icon-button">
-                        <img alt="" src="../assets/pause.svg" class="icon" />
-                        <span>{{ uiStore.readonly ? 'Enable Editing' : 'Disable Editing' }}</span>
-                    </button>
+                    icon="pause">
+                        {{ uiStore.readonly ? 'Enable Editing' : 'Disable Editing' }}
+                    </BaseButton>
                 </div>
                 <div class="label">Board Actions</div>
             </div>
@@ -123,42 +119,9 @@
     background: linear-gradient(var(--vt-c-white), var(--vt-c-grey-bright));
 }
 
-.buttons-row {
-    display: flex;
-    align-items: center;
-}
 
-.kanban-footer .button {
-    height: 24px;
-    padding: 0 10px;
+.kanban-footer .base-button {
     margin: 0 4px;
-    font-size: 13px;
-    background-color: var(--color-button-light);
-    border-radius: 16px;
-    border: 2px solid var(--vt-c-black-005);
-    transition: background-color 0.2s;
-}
-
-.kanban-footer .button:not(:disabled) {
-    cursor: pointer;
-}
-
-.kanban-footer .button:not(:disabled):hover {
-    border-color: transparent;
-    background-color: var(--vt-c-black-005);
-}
-
-.kanban-footer .icon-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding-left: 4px;
-}
-
-.kanban-footer .icon-button .icon {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
 }
 
 .kanban-actions {
