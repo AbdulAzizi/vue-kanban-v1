@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
 	icon: {
-		type: String as () => 'close' | 'minus' | 'pause' | 'play' | 'plus' | 'power' | 'shuffle' | 'sort',
+		type: String as () => 'close' | 'minus' | 'pause' | 'play' | 'plus' | 'power' | 'shuffle' | 'sort' | 'sort_asc' | 'sort_des',
 		required: false,
 	},
 	variant: {
@@ -64,6 +64,8 @@ const handleClick = () => {
 	gap: 4px;
 	transition: all 0.2s;
 	background-color: var(--button-bg, white);
+	color: var(--vt-c-black-09);
+	box-sizing: content-box;
 }
 
 .base-button.round {

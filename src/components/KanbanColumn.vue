@@ -17,7 +17,7 @@
     }>();
     
     const disabled = ref(props.disabled);
-    const ascending = ref(true);
+    const sortedBy = ref<'Ascending' | 'Descending' | null>();
 
     const titleEl = ref<HTMLElement | null>(null);
     const draftTitle = ref(props.column.title);
@@ -86,8 +86,8 @@
     };
 
     const handleSortCardsByTitle = () => {
-        ascending.value = !ascending.value;
-        cardsStore.sortCardsByTitle(props.column.id, ascending.value);
+        sortedBy.value = sortedBy.value === 'Ascending' ? 'Descending' : 'Ascending';
+        cardsStore.sortCardsByTitle(props.column.id, sortedBy.value === 'Ascending');
     };
 
     const handleColumnDelete = () => {
@@ -181,11 +181,11 @@
     <footer>
         <BaseButton
             @click="handleSortCardsByTitle"
-            icon="sort"
+            :icon="sortedBy === 'Ascending' ? 'sort_asc' : sortedBy === 'Descending' ? 'sort_des' : 'sort'"
             :aria-pressed="disabled"
             :disabled="disabled"
         >
-            Sort: {{ ascending ? 'Ascending' : 'Descending' }}
+            Sort <span style="color: var(--vt-c-black-03)" v-if="sortedBy">{{ sortedBy }}</span>
         </BaseButton>
         <BaseButton
             @click="cardsStore.deleteCardsByColumnId(props.column.id)" 
