@@ -182,16 +182,16 @@
         <BaseButton
             @click="handleSortCardsByTitle"
             :icon="sortedBy === 'Ascending' ? 'sort_asc' : sortedBy === 'Descending' ? 'sort_des' : 'sort'"
-            :aria-pressed="disabled"
-            :disabled="disabled"
+            :aria-pressed="disabled || cards.length < 2"
+            :disabled="disabled || cards.length < 2"
         >
             Sort <span style="color: var(--vt-c-black-03)" v-if="sortedBy">{{ sortedBy }}</span>
         </BaseButton>
         <BaseButton
             @click="cardsStore.deleteCardsByColumnId(props.column.id)" 
             icon="close"
-            :aria-pressed="disabled"
-            :disabled="disabled"
+            :aria-pressed="disabled || cards.length === 0"
+            :disabled="disabled || cards.length === 0"
         >
             Clear All
         </BaseButton>
