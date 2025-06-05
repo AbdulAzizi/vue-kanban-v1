@@ -64,7 +64,6 @@
 .kanban-column-form {
     display: flex;
     flex-direction: column;
-    order: 9999999;
     cursor: default;
 }
 

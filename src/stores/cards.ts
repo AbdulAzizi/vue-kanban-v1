@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useColumnsStore } from './columns';
 import type { KanbanCardType } from '@/types/kanbanTypes';
@@ -6,55 +6,47 @@ import { useDragStore } from './drag';
 
 export const useCardsStore = defineStore('cards', () => {
     const columnsStore = useColumnsStore();
-    const cards = reactive<KanbanCardType[]>([]);
+    const cards = ref<KanbanCardType[]>([]);
 
     const dragStore = useDragStore();
 
-    columnsStore.columns.forEach((column, index) => {
+    columnsStore.columns.forEach((column) => {
         for (let i = 1; i <= 3; i++) {
-            cards.push({
+            cards.value.push({
                 columnId: column.id,
                 id: crypto.randomUUID(),
                 title: `Card in ${column.title} - ${i}`,
-                description: 
-                `Description for card in ${column.title} - ${i}
-                Order: ${(index * 3) + i}`,
-                order: (index * 3) + i,
+                description: `Description for card in ${column.title} - ${i}`
             });
         }
     });
 
     const getCardsForColumn = (columnId: string) =>
-        computed(() => cards.filter(card => card.columnId === columnId));
+        computed(() => cards.value.filter(card => card.columnId === columnId));
 
     const swapCards = (hoveredCard: KanbanCardType) => {
         const dragData = dragStore.dragData;
         if (!dragData || dragData.id === hoveredCard.id) return;
 
-        const fromCard = cards.find(card => card.id === dragData.id);
-        const toCard = cards.find(card => card.id === hoveredCard.id);
+        const fromIndex = cards.value.findIndex(card => card.id === dragData.id);
+        const toIndex = cards.value.findIndex(card => card.id === hoveredCard.id);
 
-        if (!fromCard || !toCard) return;
+        if (fromIndex === -1 || toIndex === -1) return;
 
-        if (fromCard.columnId !== toCard.columnId) {
-            fromCard.columnId = toCard.columnId;
-        }
-
-        const tempOrder = fromCard.order;
-        fromCard.order = toCard.order;
-        toCard.order = tempOrder;
+        const [movedColumn] = cards.value.splice(fromIndex, 1);
+        cards.value.splice(toIndex, 0, movedColumn);
     };
 
-    const changeCardColumn = (columnId: string, cardId: string) => {
-        const card = cards.find(c => c.id === cardId);
+    const updateCard = (cardId: string, updatedCard: Partial<KanbanCardType>) => {
+        const card = cards.value.find(c => c.id === cardId);
         if (card) {
-            card.columnId = columnId;
+            Object.assign(card, updatedCard);
         }
     };
 
     const shuffleCards = () => {
         const columnIds = columnsStore.columns.map(col => col.id);
-        cards.forEach(card => {
+        cards.value.forEach(card => {
             card.columnId = columnIds[Math.floor(Math.random() * columnIds.length)];
         });
     };
@@ -64,44 +56,47 @@ export const useCardsStore = defineStore('cards', () => {
             columnId,
             id: crypto.randomUUID(),
             title,
-            description,
-            order: cards.length + 1,
+            description
         };
-        cards.push(newCard);
+        cards.value.push(newCard);
     };
 
-    const sortCardsByTitle = (columnId: string, ascending: boolean = true) => {
-        const cardsInColumn = cards
-            .filter(card => card.columnId === columnId)
-            .sort((a, b) => {
+    const sortCardsByTitle = (columnId: string, ascending = true) => {
+        const sorted = cards.value
+          .filter(c => c.columnId === columnId)
+          .sort((a, b) => {
                 const titleA = a.title.toLowerCase();
                 const titleB = b.title.toLowerCase();
                 return ascending
                     ? titleA.localeCompare(titleB)
                     : titleB.localeCompare(titleA);
-            });
+          });
 
-        cardsInColumn.forEach((card, index) => {
-            card.order = index + 1;
-        });
-    };
+        let idx = 0;
+        for (let i = 0; i < cards.value.length; i++) {
+          if (cards.value[i].columnId === columnId) {
+            cards.value[i] = sorted[idx++];
+          }
+        }
+      };
+      
 
     const deleteCardsByColumnId = (columnId: string) => {
-        const remaining = cards.filter(card => card.columnId !== columnId);
-        cards.splice(0, cards.length, ...remaining);
+        const remaining = cards.value.filter(card => card.columnId !== columnId);
+        cards.value.splice(0, cards.value.length, ...remaining);
     };
 
 
     const deleteCardById = (cardId: string) => {
-        const index = cards.findIndex(card => card.id === cardId);
+        const index = cards.value.findIndex(card => card.id === cardId);
         if (index !== -1) {
-            cards.splice(index, 1);
+            cards.value.splice(index, 1);
         }
     };
 
     return {
         addCard,
-        changeCardColumn,
+        updateCard,
         cards,
         getCardsForColumn,
         swapCards,

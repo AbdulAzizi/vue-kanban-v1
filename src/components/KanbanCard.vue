@@ -69,6 +69,7 @@
 	const updateContent = () => {
 		if (titleEl.value) titleEl.value.innerHTML = title.value;
 		if (descriptionEl.value) descriptionEl.value.innerHTML = description.value;
+		cardsStore.updateCard(props.card.id, { title: title.value, description: description.value })
 	};
 
 	onMounted(() => {

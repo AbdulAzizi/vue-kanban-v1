@@ -79,6 +79,7 @@ const handleClick = () => {
 	width: 100%;
 	padding: 8px 12px;
 	border-radius: 6px;
+	box-sizing: border-box;
 }
 
 .base-button.full-width {

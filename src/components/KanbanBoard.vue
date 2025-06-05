@@ -28,7 +28,6 @@
                 v-for="column in columnsStore.columns" 
                 :key="column.id" 
                 :column="column"
-                :style="{ order: column.order }"
                 @reorder-column="columnsStore.reorderColumns"
                 :disabled="uiStore.readonly" 
             />

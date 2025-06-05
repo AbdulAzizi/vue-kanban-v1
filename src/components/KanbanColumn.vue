@@ -61,7 +61,7 @@
             emit('reorder-column', props.column);
         }
         if (dragStore.dragType === 'card' && dragStore.dragData) {
-            cardsStore.changeCardColumn(props.column.id, dragStore.dragData.id);
+            cardsStore.updateCard(dragStore.dragData.id, { columnId: props.column.id });
         }
     };
 
@@ -155,8 +155,7 @@
     <ul class="kanban-cards-container">
         <li class="kanban-card-item" 
             v-for="card in cards" 
-            :key="card.id" 
-            :style="{ order: card.order }">
+            :key="card.id">
                 <KanbanCard 
                     :card="card"
                     @reorder-card="cardsStore.swapCards"
@@ -164,8 +163,7 @@
                 />
         </li>
         <li class="kanban-card-item"
-            style="order: 99999999;
-            margin-top: 8px;">
+            style="margin-top: 8px;">
             <BaseButton
                 @click="handleNewCard" 
                 icon="plus"
