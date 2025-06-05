@@ -59,4 +59,6 @@ export const useColumnsStore = defineStore('columns', () => {
         deleteColumn,
         renameColumn,
     };
+}, {
+    persist: true,
 });

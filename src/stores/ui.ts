@@ -12,4 +12,6 @@ export const useUIStore = defineStore('ui', () => {
         readonly,
         toggleReadonly,
     };
+}, {
+    persist: true,
 });

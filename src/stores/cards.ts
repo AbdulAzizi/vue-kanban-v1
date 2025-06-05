@@ -105,4 +105,6 @@ export const useCardsStore = defineStore('cards', () => {
         deleteCardsByColumnId,
         deleteCardById,
     }
+}, {
+    persist: true,
 });

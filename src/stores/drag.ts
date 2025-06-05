@@ -22,4 +22,6 @@ export const useDragStore = defineStore('drag', () => {
         startDrag,
         clearDrag,
     };
+}, {
+    persist: true,
 });
