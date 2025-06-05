@@ -8,6 +8,7 @@ export interface KanbanCardType {
 export interface KanbanColumnType {
     id: string;
     title: string;
+    editedAt?: Date | null;
 }
 
 export interface KanbanBoardType {

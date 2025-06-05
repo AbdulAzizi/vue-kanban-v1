@@ -175,6 +175,9 @@
                 New Card
             </BaseButton>
         </li>
+        <li v-if="column.editedAt" class="kanban-card-item edited-at">
+            {{ columnsStore.getRelativeTime(column.editedAt) }}
+        </li>
     </ul>
     <footer>
         <BaseButton
@@ -273,5 +276,11 @@
 
 .title-container span {
     font-size: 13px
+}
+
+.kanban-card-item.edited-at{
+    color: var(--vt-c-black-015);
+    margin: 16px auto;
+    font-size: 14px;
 }
 </style>
