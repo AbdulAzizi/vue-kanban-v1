@@ -49,14 +49,14 @@
                     </BaseButton>
 
                     <BaseButton
-                    :disabled="uiStore.readonly" 
+                    :disabled="uiStore.readonly || columnsStore.columns.length < 2" 
                     @click="columnsStore.shuffleColumns" 
                     icon="shuffle">
                         Shuffle Columns
                     </BaseButton>
 
                     <BaseButton
-                    :disabled="uiStore.readonly"
+                    :disabled="uiStore.readonly || columnsStore.columns.length === 0 || cardsStore.cards.length < 2"
                     @click="cardsStore.shuffleCards" 
                     icon="shuffle">
                         Shuffle Cards
