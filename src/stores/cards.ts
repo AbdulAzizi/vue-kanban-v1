@@ -10,16 +10,18 @@ export const useCardsStore = defineStore('cards', () => {
 
     const dragStore = useDragStore();
 
-    columnsStore.columns.forEach((column) => {
-        for (let i = 1; i <= 3; i++) {
-            cards.value.push({
+    if (cards.value.length === 0) {
+        columnsStore.columns.forEach((column) => {
+            for (let i = 1; i <= 3; i++) {
+                cards.value.push({
                 columnId: column.id,
                 id: crypto.randomUUID(),
                 title: `Card in ${column.title} - ${i}`,
                 description: `Description for card in ${column.title} - ${i}`
-            });
-        }
-    });
+                });
+            }
+        });
+    }
 
     const getCardsForColumn = (columnId: string) =>
         computed(() => cards.value.filter(card => card.columnId === columnId));
@@ -36,9 +38,17 @@ export const useCardsStore = defineStore('cards', () => {
         const [movedCard] = cards.value.splice(fromIndex, 1);
         cards.value.splice(toIndex, 0, movedCard);
 
-        if (movedCard.columnId !== hoveredCard.columnId) {
-          movedCard.columnId = hoveredCard.columnId;
+        const originalCard = cards.value.find(card => card.id === dragData.id);
+        if (originalCard && movedCard.columnId !== hoveredCard.columnId) {
+            movedCard.columnId = hoveredCard.columnId;
         }
+
+        const fromColumn = columnsStore.columns.find(col => col.id === originalCard?.columnId);
+        const toColumn = columnsStore.columns.find(col => col.id === hoveredCard.columnId);
+
+        const now = new Date();
+        if (fromColumn) fromColumn.editedAt = now;
+        if (toColumn && toColumn !== fromColumn) toColumn.editedAt = now;
     };
 
     const updateCard = (cardId: string, updatedCard: Partial<KanbanCardType>) => {
@@ -53,6 +63,11 @@ export const useCardsStore = defineStore('cards', () => {
         cards.value.forEach(card => {
             card.columnId = columnIds[Math.floor(Math.random() * columnIds.length)];
         });
+
+        const now = new Date();
+        columnsStore.columns.forEach(col => {
+            col.editedAt = now;
+        });
     };
 
     const addCard = ({ columnId, title, description }: { columnId: string; title: string; description: string }) => {
@@ -63,6 +78,9 @@ export const useCardsStore = defineStore('cards', () => {
             description
         };
         cards.value.push(newCard);
+
+        const column = columnsStore.columns.find(col => col.id === columnId);
+        if (column) column.editedAt = new Date();
     };
 
     const sortCardsByTitle = (columnId: string, ascending = true) => {
@@ -78,23 +96,33 @@ export const useCardsStore = defineStore('cards', () => {
 
         let idx = 0;
         for (let i = 0; i < cards.value.length; i++) {
-          if (cards.value[i].columnId === columnId) {
-            cards.value[i] = sorted[idx++];
-          }
+            if (cards.value[i].columnId === columnId) {
+                cards.value[i] = sorted[idx++];
+            }
         }
+
+        const column = columnsStore.columns.find(col => col.id === columnId);
+        if (column) column.editedAt = new Date();
       };
       
 
     const deleteCardsByColumnId = (columnId: string) => {
         const remaining = cards.value.filter(card => card.columnId !== columnId);
         cards.value.splice(0, cards.value.length, ...remaining);
+
+        const column = columnsStore.columns.find(col => col.id === columnId);
+        if (column) column.editedAt = new Date();
     };
 
 
     const deleteCardById = (cardId: string) => {
         const index = cards.value.findIndex(card => card.id === cardId);
         if (index !== -1) {
+            const card = cards.value[index];
             cards.value.splice(index, 1);
+
+            const column = columnsStore.columns.find(col => col.id === card.columnId);
+            if (column) column.editedAt = new Date();
         }
     };
 

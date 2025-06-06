@@ -6,11 +6,23 @@ import { useDragStore } from './drag';
 export const useColumnsStore = defineStore('columns', () => {
     const dragStore = useDragStore();
 
-    const columns = ref<KanbanColumnType[]>([
-        { id: crypto.randomUUID(), title: 'Todo' },
-        { id: crypto.randomUUID(), title: 'In progress' },
-        { id: crypto.randomUUID(), title: 'Done' }
-    ]);
+    const defaultColumns: KanbanColumnType[] = [
+        { id: crypto.randomUUID(), title: 'Todo', editedAt: null },
+        { id: crypto.randomUUID(), title: 'In progress', editedAt: null },
+        { id: crypto.randomUUID(), title: 'Done', editedAt: null },
+    ];
+
+    const columns = ref<KanbanColumnType[]>([]);
+
+    if (columns.value.length) {
+        columns.value.forEach(col => {
+          if (col.editedAt && typeof col.editedAt === 'string') {
+            col.editedAt = new Date(col.editedAt);
+          }
+        });
+      } else {
+        columns.value = defaultColumns;
+    }
 
     const getRelativeTime = (date?: Date | null): string => {
         if (!date) return '';
