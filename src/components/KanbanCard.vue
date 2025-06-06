@@ -86,6 +86,14 @@
 	};
 
 	const cancel = async () => {
+		if (
+			title.value.trim() === '' &&
+			description.value.trim() === ''
+		) {
+			cardsStore.deleteCardById(props.card.id);
+			return;
+		}
+
 		draftTitle.value = title.value;
 		draftDescription.value = description.value;
 		isEditing.value = false;
