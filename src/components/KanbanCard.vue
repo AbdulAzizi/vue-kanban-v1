@@ -114,6 +114,12 @@
 		
 		cardsStore.deleteCardById(props.card.id)
 	};
+
+	const onDoubleClick = () => {
+		if (!isEditing.value && !props.disabled) {
+			isEditing.value = true;
+		}
+	};
 </script>
 
 <template>
@@ -126,7 +132,7 @@
 		@dragover.prevent.stop="ondragover"
 		@dragstart.stop="ondragstart"
 		:draggable="!disabled"
-		@dblclick="isEditing = (!isEditing && !disabled)"
+		@dblclick="onDoubleClick"
 		@keydown="handleKeydown"
 		@contextmenu.prevent="onRightClick"
 	>
