@@ -46,10 +46,10 @@ export const useCardsStore = defineStore('cards', () => {
     };
 
     const shuffleCards = () => {
-        const columnIds = columnsStore.columns.map(col => col.id);
-        cards.value.forEach(card => {
-            card.columnId = columnIds[Math.floor(Math.random() * columnIds.length)];
-        });
+        for (let i = cards.value.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards.value[i], cards.value[j]] = [cards.value[j], cards.value[i]];
+        }
 
         const now = new Date();
         columnsStore.columns.forEach(col => {
