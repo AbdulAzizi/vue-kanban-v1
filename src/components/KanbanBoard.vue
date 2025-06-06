@@ -101,7 +101,7 @@
 
 
 .kanban-footer .base-button {
-    margin: 0 4px;
+    margin: 0 2px;
 }
 
 .kanban-actions {

@@ -67,6 +67,7 @@ const handleClick = () => {
 	color: var(--vt-c-black-09);
 	box-sizing: content-box;
 	white-space: nowrap;
+	font-weight: 600;
 }
 
 .base-button.round {

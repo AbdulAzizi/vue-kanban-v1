@@ -226,7 +226,7 @@
 }
 
 .kanban-column-heading {
-    font-weight: 400;
+    font-weight: 600;
     text-transform: uppercase;
     font-size: 13px;
     color: var(--vt-c-black-03);
@@ -286,7 +286,9 @@
 }
 
 .title-container span {
-    font-size: 13px
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--vt-c-black-06);
 }
 
 .kanban-card-item.edited-at{
@@ -299,5 +301,6 @@
 
 .kanban-column-nav {
     display: flex;
+    gap: 4px;
 }
 </style>

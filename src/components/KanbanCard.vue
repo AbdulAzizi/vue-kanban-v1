@@ -203,11 +203,14 @@
 
 .kanban-card .kanban-card-title {
 	font-weight: 600;
+	font-size: 14px;
+	color: var(--vt-c-black-9--vt-c-black-09);
 	margin: 0;
 }
 
 .kanban-card .kanban-card-description {
 	font-size: 14px;
+	font-weight: 500;
 	color: var(--vt-c-black-03);
 	margin: 8px 0;
 }
