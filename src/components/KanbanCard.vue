@@ -139,14 +139,14 @@
 		<h5
 			ref="titleEl"
 			class="kanban-card-title"
-			:contenteditable="isEditing"
+			:contenteditable="isEditing && !disabled"
 			spellcheck="false"
 			@keyup="onTextChange"
 		></h5>
 		<p
 			ref="descriptionEl"
 			class="kanban-card-description"
-			:contenteditable="isEditing"
+			:contenteditable="isEditing && !disabled"
 			spellcheck="false"
 			@keyup="onTextChange"
 		></p>
