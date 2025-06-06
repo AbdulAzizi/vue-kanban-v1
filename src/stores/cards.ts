@@ -10,19 +10,6 @@ export const useCardsStore = defineStore('cards', () => {
 
     const dragStore = useDragStore();
 
-    if (cards.value.length === 0) {
-        columnsStore.columns.forEach((column) => {
-            for (let i = 1; i <= 3; i++) {
-                cards.value.push({
-                columnId: column.id,
-                id: crypto.randomUUID(),
-                title: `Card in ${column.title} - ${i}`,
-                description: `Description for card in ${column.title} - ${i}`
-                });
-            }
-        });
-    }
-
     const getCardsForColumn = (columnId: string) =>
         computed(() => cards.value.filter(card => card.columnId === columnId));
 
