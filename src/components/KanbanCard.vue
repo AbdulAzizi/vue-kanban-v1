@@ -45,7 +45,7 @@
 	};
 
 	const ondragover = () => {
-		if (props.disabled) return;
+		if (props.disabled || isEditing.value) return;
 
 		if (dragStore.dragType === 'card') {
 			emit('reorder-card', props.card);
@@ -53,7 +53,7 @@
 	};
 
 	const ondragend = () => {
-		if (props.disabled) return;
+		if (props.disabled || isEditing.value) return;
 
 		dragStore.clearDrag();
 	};
@@ -131,7 +131,7 @@
 		@dragend="ondragend"
 		@dragover.prevent.stop="ondragover"
 		@dragstart.stop="ondragstart"
-		:draggable="!disabled"
+		:draggable="!disabled && !isEditing"
 		@dblclick="onDoubleClick"
 		@keydown="handleKeydown"
 		@contextmenu.prevent="onRightClick"
