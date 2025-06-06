@@ -1,21 +1,16 @@
 <script lang="ts" setup>
-    import { ref } from 'vue';
     import KanbanColumn from './KanbanColumn.vue';
-    import KanbanColumnForm from './KanbanColumnForm.vue';
     import { useColumnsStore } from '@/stores/columns';
     import { useCardsStore } from '@/stores/cards';
     import { useUIStore } from '@/stores/ui';
     import BaseButton from './BaseButton.vue';
 
-    const displayColumnForm = ref(false);
-
     const columnsStore = useColumnsStore();
     const cardsStore = useCardsStore();
     const uiStore = useUIStore();
     
-    const handleAddColumn = (title: string) => {
-        columnsStore.addColumn(title);
-        displayColumnForm.value = false;
+    const handleAddColumn = () => {
+        columnsStore.addColumn("");
     };
 </script>
 
@@ -31,11 +26,6 @@
                 @reorder-column="columnsStore.reorderColumns"
                 :disabled="uiStore.readonly" 
             />
-            <KanbanColumnForm
-                v-if="displayColumnForm"
-                @save="handleAddColumn"
-                @cancel="displayColumnForm = false"
-            />
         </section>
         
         <footer class="kanban-footer">
@@ -43,7 +33,7 @@
                 <div class="buttons-row">
                     <BaseButton
                     :disabled="uiStore.readonly"
-                    @click="displayColumnForm = true" 
+                    @click="handleAddColumn" 
                     icon="plus">
                         New Column
                     </BaseButton>

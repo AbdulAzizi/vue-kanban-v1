@@ -25,6 +25,7 @@
     onMounted(() => {
         if (titleEl.value) {
             titleEl.value.innerText = draftTitle.value;
+            titleEl.value.focus();
         }
     });
 
@@ -133,6 +134,7 @@
                 spellcheck="false"
                 @input="onTitleChange"
                 @keydown.enter.prevent="saveTitle"
+                data-placeholder="Add Heading"
             />
             <span v-if="cards.length" aria-label="Number of cards">{{ cards.length }}</span>
         </div>
@@ -229,6 +231,13 @@
     font-size: 13px;
     color: var(--vt-c-black-03);
     margin: 0;
+    outline: none;
+}
+
+.kanban-column-heading:empty:before {
+  content: attr(data-placeholder);
+  pointer-events: none;
+  text-transform: capitalize;
 }
 
 .kanban-cards-container {
