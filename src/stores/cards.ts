@@ -70,16 +70,9 @@ export const useCardsStore = defineStore('cards', () => {
         });
     };
 
-    const addCard = ({ columnId, title, description }: { columnId: string; title: string; description: string }) => {
-        const newCard: KanbanCardType = {
-            columnId,
-            id: crypto.randomUUID(),
-            title,
-            description
-        };
+    const addCard = (newCard: KanbanCardType) => {
         cards.value.push(newCard);
-
-        const column = columnsStore.columns.find(col => col.id === columnId);
+        const column = columnsStore.columns.find(col => col.id === newCard.columnId);
         if (column) column.editedAt = new Date();
     };
 

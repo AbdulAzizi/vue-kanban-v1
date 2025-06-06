@@ -79,9 +79,11 @@
 
     const handleNewCard = () => {
         cardsStore.addCard({
-            title: 'Add title',
-            description: 'Add description',
-            columnId: props.column.id
+            id: crypto.randomUUID(),
+            title: '',
+            description: '',
+            columnId: props.column.id,
+            isEditing: true
         });
     };
 
@@ -160,6 +162,7 @@
                     :card="card"
                     @reorder-card="cardsStore.swapCards"
                     :disabled="disabled"
+                    :inEditState="card.isEditing"
                 />
         </li>
         <li class="kanban-card-item"

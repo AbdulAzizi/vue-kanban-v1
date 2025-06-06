@@ -8,13 +8,14 @@
 	const props = defineProps<{
 		card: KanbanCardType,
 		disabled: boolean,
+		inEditState?: boolean,
 	}>();
 
 	const emit = defineEmits<{
 		(e: 'reorder-card', card: KanbanCardType): void
 	}>();
 
-	const isEditing = ref(false);
+	const isEditing = ref(props.inEditState);
 
 	const draftTitle = ref(props.card.title);
 	const draftDescription = ref(props.card.description);
@@ -24,7 +25,13 @@
 
 	const titleEl = ref<HTMLElement | null>(null);
 	const descriptionEl = ref<HTMLElement | null>(null);
-	const rootEl = ref<HTMLElement | null>(null);
+
+	onMounted(() => {
+		updateContent();
+		if (isEditing.value && titleEl.value) {
+			titleEl.value.focus();
+		}
+	});
 
 	const isDirty = computed(() =>
 		draftTitle.value !== title.value || draftDescription.value !== description.value
@@ -65,12 +72,8 @@
 	const updateContent = () => {
 		if (titleEl.value) titleEl.value.innerHTML = title.value;
 		if (descriptionEl.value) descriptionEl.value.innerHTML = description.value;
-		cardsStore.updateCard(props.card.id, { title: title.value, description: description.value })
+		cardsStore.updateCard(props.card.id, { title: title.value, description: description.value, isEditing: false })
 	};
-
-	onMounted(() => {
-		updateContent();
-	});
 
 	const save = async () => {
 		if (!isDirty.value) return;
@@ -92,8 +95,10 @@
 	};
 
 	const onTextChange = () => {
-		if (titleEl.value && descriptionEl.value) {
+		if (titleEl.value) {
 			draftTitle.value = titleEl.value.innerHTML;
+		}
+		if (descriptionEl.value) {
 			draftDescription.value = descriptionEl.value.innerHTML;
 		}
 	};
@@ -124,7 +129,6 @@
 
 <template>
 	<article
-		ref="rootEl"
 		class="kanban-card"
 		:class="{ editing: isEditing, dragging: isDragging }"
 		:aria-label="props.card.title"
@@ -149,6 +153,7 @@
 			:contenteditable="isEditing && !disabled"
 			spellcheck="false"
 			@keyup="onTextChange"
+			:data-placeholder="'Add Description'"
 		></p>
 		<footer v-if="isEditing" contenteditable="false">
 			<BaseButton
@@ -207,5 +212,10 @@
     justify-content: start;
     gap: 0px;
 	padding: 0;
+}
+
+.kanban-card .kanban-card-description:empty:before {
+  content: attr(data-placeholder);
+  pointer-events: none;
 }
 </style>

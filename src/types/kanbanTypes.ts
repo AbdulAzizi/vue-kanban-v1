@@ -3,6 +3,7 @@ export interface KanbanCardType {
     title: string;
     description: string;
     columnId: KanbanColumnType["id"];
+    isEditing?: boolean;
 }
 
 export interface KanbanColumnType {

@@ -65,6 +65,7 @@
     display: flex;
     flex-direction: column;
     cursor: default;
+    padding: 16px;
 }
 
 .column-input {
