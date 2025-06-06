@@ -96,14 +96,9 @@
     overflow-x: auto;
 }
 
-.kanban-columns::-webkit-scrollbar {
-    height: 8px;
-}
-
-.kanban-columns::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
+    .kanban-columns::-webkit-scrollbar {
+        display: none;
+    }
 
 .kanban-footer {
     padding: 24px 0;
