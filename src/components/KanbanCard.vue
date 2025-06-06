@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+	import { ref, computed, onMounted, nextTick } from 'vue';
 	import type { KanbanCardType } from '../types/kanbanTypes';
 	import { useDragStore } from '@/stores/drag';
 	import { useCardsStore } from '@/stores/cards';
@@ -97,25 +97,6 @@
 			draftDescription.value = descriptionEl.value.innerHTML;
 		}
 	};
-
-	const onClickOutside = (event: MouseEvent) => {
-		if (!rootEl.value) return;
-		if (!rootEl.value.contains(event.target as Node)) {
-			isEditing.value = false;
-		}
-	};
-
-	watch(isEditing, (val) => {
-		if (val) {
-			document.addEventListener('click', onClickOutside);
-		} else {
-			document.removeEventListener('click', onClickOutside);
-		}
-	});
-
-	onBeforeUnmount(() => {
-		document.removeEventListener('click', onClickOutside);
-	});
 
 	const handleKeydown = (e: KeyboardEvent) => {
         switch (e.key) {
