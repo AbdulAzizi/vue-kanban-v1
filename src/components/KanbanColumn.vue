@@ -163,7 +163,7 @@
                 />
         </li>
         <li class="kanban-card-item"
-            style="margin-top: 8px;">
+            style="margin-bottom: 8px;">
             <BaseButton
                 @click="handleNewCard" 
                 icon="plus"
@@ -207,7 +207,6 @@
     width: 448px;
     background-color: var(--color-column-background);
     border-radius: 12px;
-    padding: 16px;
     display: flex;
     flex-direction: column;
 }
@@ -231,7 +230,7 @@
 
 .kanban-cards-container {
     margin: 0;
-    padding: 0;
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -250,11 +249,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    padding: 16px;
 }
 
 .kanban-column footer {
-    padding-top: 20px;
+    padding: 20px 16px;
     display: flex;
     justify-content: center;
     gap: 4px;
@@ -280,7 +279,13 @@
 
 .kanban-card-item.edited-at{
     color: var(--vt-c-black-015);
-    margin: 16px auto;
+    margin: 0 auto;
+    margin-top: 8px;
+    margin-bottom: 16px;
     font-size: 14px;
+}
+
+.kanban-column-nav {
+    display: flex;
 }
 </style>

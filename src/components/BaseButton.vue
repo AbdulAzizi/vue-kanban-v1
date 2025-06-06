@@ -66,6 +66,7 @@ const handleClick = () => {
 	background-color: var(--button-bg, white);
 	color: var(--vt-c-black-09);
 	box-sizing: content-box;
+	white-space: nowrap;
 }
 
 .base-button.round {

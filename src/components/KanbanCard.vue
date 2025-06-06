@@ -162,7 +162,7 @@
 			<BaseButton
 				@click="cancel"
 				icon="minus"
-				:disabled="!isDirty"
+				:disabled="disabled"
 			>
 				Cancel
 			</BaseButton>
@@ -172,7 +172,7 @@
 	
 <style scoped>
 .kanban-card {
-	margin-top: 8px;
+	margin-bottom: 8px;
 	padding: 16px;
 	background-color: var(--color-background);
 	border-radius: 8px;
@@ -206,5 +206,6 @@
 .kanban-card footer {
     justify-content: start;
     gap: 0px;
+	padding: 0;
 }
 </style>
