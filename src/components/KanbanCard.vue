@@ -42,8 +42,6 @@
 		}
 
 		dragStore.startDrag('card', props.card);
-
-		(event.target as HTMLElement).classList.add('dragging');
 	};
 
 	const ondragover = () => {
@@ -54,17 +52,15 @@
 		}
 	};
 
-	const ondragend = (event: DragEvent) => {
+	const ondragend = () => {
 		if (props.disabled) return;
 
 		dragStore.clearDrag();
-
-		const target = event.target as HTMLElement | null;
-
-		if (target) {
-			target.classList.remove('dragging');
-		}
 	};
+
+	const isDragging = computed(() =>
+		dragStore.dragType === 'card' && dragStore.dragData?.id === props.card.id
+	);
 
 	const updateContent = () => {
 		if (titleEl.value) titleEl.value.innerHTML = title.value;
@@ -143,10 +139,10 @@
 	<article
 		ref="rootEl"
 		class="kanban-card"
-		:class="{ editing: isEditing }"
+		:class="{ editing: isEditing, dragging: isDragging }"
 		:aria-label="props.card.title"
 		@dragend="ondragend"
-		@dragover.prevent="ondragover"
+		@dragover.prevent.stop="ondragover"
 		@dragstart.stop="ondragstart"
 		:draggable="!disabled"
 		@dblclick="isEditing = (!isEditing && !disabled)"

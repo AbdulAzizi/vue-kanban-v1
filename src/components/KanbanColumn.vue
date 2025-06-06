@@ -118,8 +118,8 @@
     :class="{ disabled }"
     :aria-label="props.column.title"
     @dragend="ondragend"
-    @dragover.prevent="ondragover"
-    @dragstart="ondragstart"
+    @dragover.prevent.stop="ondragover"
+    @dragstart.stop="ondragstart"
     :draggable="!disabled"
   >
     <header class="kanban-column-title kanban-column-header">

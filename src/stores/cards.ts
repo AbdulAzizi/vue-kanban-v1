@@ -33,8 +33,12 @@ export const useCardsStore = defineStore('cards', () => {
 
         if (fromIndex === -1 || toIndex === -1) return;
 
-        const [movedColumn] = cards.value.splice(fromIndex, 1);
-        cards.value.splice(toIndex, 0, movedColumn);
+        const [movedCard] = cards.value.splice(fromIndex, 1);
+        cards.value.splice(toIndex, 0, movedCard);
+
+        if (movedCard.columnId !== hoveredCard.columnId) {
+          movedCard.columnId = hoveredCard.columnId;
+        }
     };
 
     const updateCard = (cardId: string, updatedCard: Partial<KanbanCardType>) => {
