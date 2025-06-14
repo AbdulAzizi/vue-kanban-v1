@@ -1,39 +1,61 @@
-# vue-kanban-v1
+# 📝 Kanban Board (Vue 3)
 
-This template should help get you started developing with Vue 3 in Vite.
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen?logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Pinia](https://img.shields.io/badge/Pinia-Store-yellow?logo=pinia&logoColor=white)](https://pinia.vuejs.org/)
+[![Deployed on Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-Deployed-orange?logo=cloudflare&logoColor=white)](https://vue-kanban.pages.dev/)
+[![Live Demo](https://img.shields.io/badge/Demo-Online-green?style=flat-square)](https://vue-kanban.pages.dev/)
 
-## Recommended IDE Setup
+A fully-functional **Kanban board application** built entirely with **Vue 3** — no UI libraries, fully custom components, clean code structure and feature-complete functionality.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![image](https://github.com/user-attachments/assets/dc66682b-30a3-4ae7-a1c6-afd876e50688)
 
-## Type Support for `.vue` Imports in TS
+---
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 🔗 Live Demo
 
-## Customize configuration
+👉 [**Try the Kanban Board here**](https://vue-kanban.pages.dev/)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
 
-## Project Setup
+## 🚀 Features
 
-```sh
-pnpm install
-```
+### Board Actions
+- ✅ **New Column** — add new columns dynamically
+- 🔀 **Shuffle Columns** — randomize column order
+- 🔀 **Shuffle Cards** — randomize cards within columns
+- 🔒 **Disable Editing** — globally lock editing mode
 
-### Compile and Hot-Reload for Development
+### Column Management
+- ➕ Add columns via `Board Actions → New Column`
+- ✏️ Rename columns with `contenteditable` (save on Enter)
+- ❌ Delete columns (`Delete Column`)
+- 🔐 Disable editing for all columns with `Disable Editing`
+- 🔢 Sort columns alphabetically (`Sort`)
+- 🗑️ Clear all columns (`Clear All`)
 
-```sh
-pnpm dev
-```
+### Card Management
+- ➕ Add new cards via `New Card` button (confirm with Enter)
+- ✏️ Edit cards on double-click
+  - Edit both `title` and `description` via `contenteditable`
+  - Buttons `Save Changes` and `Cancel` appear during editing
+  - `Save` button disabled if no changes detected
+- ❌ Delete cards via right-click (`contextmenu`)
 
-### Type-Check, Compile and Minify for Production
+### Extra Features
+- ✅ **Three default columns**: TODO, In Progress, Done
+- ✅ Custom hover, active, and focus states for better UX
+- ✅ Custom sorting logic for cards within columns
+- ✅ Persistent state saving (optional)
+- ✅ Fully custom **Drag & Drop** — no external libraries used
 
-```sh
-pnpm build
-```
+---
 
-### Lint with [ESLint](https://eslint.org/)
+## 🛠️ Tech Stack
 
-```sh
-pnpm lint
-```
+- ⚡ **Vue 3 (Composition API)**
+- ⚡ **TypeScript**
+- ⚡ **Pinia** for state management
+- ⚡ Fully custom UI, no external UI libraries
+
+---
